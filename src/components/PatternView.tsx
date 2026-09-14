@@ -4,6 +4,7 @@ interface PatternViewProps {
   pattern: Pattern;
   onEdit: () => void;
   onDelete: () => void;
+  onExport?: () => void;
 }
 
 function getDifficultyStars(difficulty: number): string {
@@ -19,7 +20,7 @@ function getDifficultyLabel(difficulty: number): string {
   }
 }
 
-export default function PatternView({ pattern, onEdit, onDelete }: PatternViewProps) {
+export default function PatternView({ pattern, onEdit, onDelete, onExport }: PatternViewProps) {
   const formatDate = (timestamp: number) => {
     return new Date(timestamp).toLocaleDateString('ru-RU', {
       day: 'numeric',
@@ -191,16 +192,24 @@ export default function PatternView({ pattern, onEdit, onDelete }: PatternViewPr
       </div>
 
       {/* Actions */}
-      <div className="mt-8 flex justify-center gap-4">
+      <div className="mt-8 flex flex-wrap justify-center gap-3">
         <button
           onClick={onEdit}
-          className="bg-[#d4856b] hover:bg-[#a85d45] text-white px-6 py-3 rounded-xl font-medium transition-all text-sm shadow-md flex items-center gap-2"
+          className="bg-[#d4856b] hover:bg-[#a85d45] text-white px-5 py-3 rounded-xl font-medium transition-all text-sm shadow-md flex items-center gap-2"
         >
           <span>✏️</span> Редактировать
         </button>
+        {onExport && (
+          <button
+            onClick={onExport}
+            className="bg-[#7ba7c9]/20 hover:bg-[#7ba7c9]/40 text-[#5a8a9f] px-5 py-3 rounded-xl font-medium transition-all text-sm flex items-center gap-2"
+          >
+            <span>💾</span> Сохранить на компьютер
+          </button>
+        )}
         <button
           onClick={onDelete}
-          className="bg-red-50 hover:bg-red-100 text-red-400 hover:text-red-500 px-6 py-3 rounded-xl font-medium transition-all text-sm flex items-center gap-2"
+          className="bg-red-50 hover:bg-red-100 text-red-400 hover:text-red-500 px-5 py-3 rounded-xl font-medium transition-all text-sm flex items-center gap-2"
         >
           <span>🗑</span> Удалить
         </button>

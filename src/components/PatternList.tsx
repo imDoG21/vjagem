@@ -144,10 +144,16 @@ export default function PatternList({ patterns, searchQuery, onSearchChange, onC
         </div>
       )}
 
-      {/* Stats */}
+      {/* Stats & Info */}
       {patterns.length > 0 && (
-        <div className="mt-8 text-center text-sm text-[#8b7260]">
-          Всего схем: {patterns.length}
+        <div className="mt-8 text-center space-y-3">
+          <p className="text-sm text-[#8b7260]">
+            Всего схем: {patterns.length}
+          </p>
+          <div className="inline-block bg-[#7ba7c9]/10 border border-[#7ba7c9]/20 rounded-xl px-4 py-3 text-xs text-[#5a8a9f] max-w-md">
+            💡 <strong>Совет:</strong> Нажмите «💾 Сохранить» вверху, чтобы скачать все схемы в файл на компьютер. 
+            Так вы не потеряете данные и сможете перенести их на другое устройство.
+          </div>
         </div>
       )}
     </div>

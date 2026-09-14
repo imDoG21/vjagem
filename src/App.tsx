@@ -82,6 +82,42 @@ function App() {
     setCurrentPattern(null);
   };
 
+  const handleExport = () => {
+    const dataStr = JSON.stringify(patterns, null, 2);
+    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(dataBlob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `crochet-patterns-${new Date().toISOString().split('T')[0]}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
+  const handleImport = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        try {
+          const imported = JSON.parse(event.target?.result as string);
+          if (Array.isArray(imported)) {
+            const merged = [...imported, ...patterns.filter(p => !imported.find((i: Pattern) => i.id === p.id))];
+            setPatterns(merged);
+            alert(`Импортировано ${imported.length} схем!`);
+          } else {
+            alert('Неверный формат файла');
+          }
+        } catch (err) {
+          alert('Ошибка при чтении файла');
+        }
+      };
+      reader.readAsText(file);
+      e.target.value = '';
+    }
+  };
+
   const filteredPatterns = patterns.filter(p =>
     p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     p.author.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -101,13 +137,37 @@ function App() {
             </div>
           </div>
           {viewMode === 'list' && (
-            <button
-              onClick={handleCreate}
-              className="bg-[#d4856b] hover:bg-[#a85d45] text-white px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 hover:scale-105 flex items-center gap-2 shadow-md"
-            >
-              <span className="text-lg">+</span>
-              <span className="hidden sm:inline">Новая схема</span>
-            </button>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={handleExport}
+                disabled={patterns.length === 0}
+                className="bg-[#7ba7c9]/20 hover:bg-[#7ba7c9]/40 text-[#5a8a9f] px-3 py-2 rounded-full text-sm font-medium transition-all duration-200 flex items-center gap-1 disabled:opacity-50 disabled:cursor-not-allowed"
+                title="Экспортировать все схемы в файл"
+              >
+                <span>💾</span>
+                <span className="hidden sm:inline">Сохранить</span>
+              </button>
+              <label
+                className="bg-[#b893c9]/20 hover:bg-[#b893c9]/40 text-[#8a6b9f] px-3 py-2 rounded-full text-sm font-medium transition-all duration-200 flex items-center gap-1 cursor-pointer"
+                title="Импортировать схемы из файла"
+              >
+                <span>📂</span>
+                <span className="hidden sm:inline">Загрузить</span>
+                <input
+                  type="file"
+                  accept=".json"
+                  onChange={handleImport}
+                  className="hidden"
+                />
+              </label>
+              <button
+                onClick={handleCreate}
+                className="bg-[#d4856b] hover:bg-[#a85d45] text-white px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 hover:scale-105 flex items-center gap-2 shadow-md"
+              >
+                <span className="text-lg">+</span>
+                <span className="hidden sm:inline">Новая схема</span>
+              </button>
+            </div>
           )}
           {viewMode !== 'list' && (
             <button
@@ -146,6 +206,18 @@ function App() {
             pattern={currentPattern}
             onEdit={() => handleEdit(currentPattern)}
             onDelete={() => handleDelete(currentPattern.id)}
+            onExport={() => {
+              const dataStr = JSON.stringify([currentPattern], null, 2);
+              const dataBlob = new Blob([dataStr], { type: 'application/json' });
+              const url = URL.createObjectURL(dataBlob);
+              const link = document.createElement('a');
+              link.href = url;
+              link.download = `${currentPattern.name || 'scheme'}-${currentPattern.cardNumber || 'pattern'}.json`;
+              document.body.appendChild(link);
+              link.click();
+              document.body.removeChild(link);
+              URL.revokeObjectURL(url);
+            }}
           />
         )}
       </main>
