@@ -1,1 +1,79 @@
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&family=Caveat:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
+
+:root {
+  --color-primary: #d4856b;
+  --color-primary-light: #f0c4b4;
+  --color-primary-dark: #a85d45;
+  --color-bg: #fdf8f5;
+  --color-card: #ffffff;
+  --color-text: #4a3728;
+  --color-text-light: #8b7260;
+  --color-accent: #e8a87c;
+  --color-green: #7fb685;
+  --color-blue: #7ba7c9;
+  --color-purple: #b893c9;
+}
+
+body {
+  font-family: 'Comfortaa', cursive;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+.font-handwritten {
+  font-family: 'Caveat', cursive;
+}
+
+.card-shadow {
+  box-shadow: 0 4px 20px rgba(168, 93, 69, 0.1), 0 1px 4px rgba(168, 93, 69, 0.08);
+}
+
+.card-shadow-hover {
+  box-shadow: 0 8px 30px rgba(168, 93, 69, 0.15), 0 2px 8px rgba(168, 93, 69, 0.1);
+}
+
+.pattern-bg {
+  background-image: radial-gradient(circle at 20px 20px, rgba(212, 133, 107, 0.05) 2px, transparent 0);
+  background-size: 40px 40px;
+}
+
+textarea, input, select {
+  font-family: 'Comfortaa', cursive;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: rgba(212, 133, 107, 0.1);
+  border-radius: 3px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: rgba(212, 133, 107, 0.3);
+  border-radius: 3px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: rgba(212, 133, 107, 0.5);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.animate-slide-in {
+  animation: slideIn 0.3s ease-out;
+}
